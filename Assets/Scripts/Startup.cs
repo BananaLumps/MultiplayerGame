@@ -8,6 +8,7 @@ namespace Base
 
     public class Startup : MonoBehaviour
     {
+        [SerializeField]
         private NetworkManager _networkManager;
         private LocalConnectionState _clientState = LocalConnectionState.Stopped;
         private LocalConnectionState _serverState = LocalConnectionState.Stopped;
@@ -20,10 +21,7 @@ namespace Base
                 _networkManager.ServerManager.StopConnection(true);
             else
                 _networkManager.ServerManager.StartConnection();
-
         }
-
-
         public void OnClick_Client()
         {
             if (_networkManager == null)
@@ -41,22 +39,18 @@ namespace Base
             _networkManager.ServerManager.OnServerConnectionState += ServerManager_OnServerConnectionState;
             _networkManager.ClientManager.OnClientConnectionState += ClientManager_OnClientConnectionState;
         }
-
         private void ClientManager_OnClientConnectionState(ClientConnectionStateArgs args)
         {
             _clientState = args.ConnectionState;
         }
-
         private void ServerManager_OnServerConnectionState(ServerConnectionStateArgs args)
         {
             _serverState = args.ConnectionState;
         }
-
-        // Update is called once per frame
-        void Update()
+        private void OnDestroy()
         {
-
-
+            _networkManager.ServerManager.OnServerConnectionState -= ServerManager_OnServerConnectionState;
+            _networkManager.ClientManager.OnClientConnectionState -= ClientManager_OnClientConnectionState;
         }
 
     }
