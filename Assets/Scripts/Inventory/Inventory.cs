@@ -2,8 +2,10 @@
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using GameKit.Dependencies.Utilities;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Base.Inventory
@@ -14,76 +16,84 @@ namespace Base.Inventory
         GameObject UIObject;
         public string UserID;
         int size = 16;
-        readonly SyncDictionary<int, Item> _items = new();
+        Dictionary<string, InventoryItem> _items = new();
         Dictionary<int, int> itemLocation = new();
-        public SyncDictionary<int, Item> Items => _items;
+        public Dictionary<string, InventoryItem> Items => _items;
         public Dictionary<int, int> ItemLocation => itemLocation;
-        public static EventHandler<InventoryEventArgs> ItemAdded;
+        public static EventHandler<InventoryEventArgs> InventoryEvent;
 
-        public int GetStackSize(Item item)
+        //TODO: Fix creation of inventory and empty slots.
+        public void AddItem(string itemID, int amount)
         {
-            //TODO
-            //Check the stack size based on type and skill levels
-            return 1;
+            AddItem(new InventoryItem(itemID, amount));
         }
-        [ServerRpc]
-        public void AddItem(Item item, NetworkConnection nc = null)
+
+        public void AddEquipment(string itemID, int amount, float durability)
         {
-            int fullAmount = item.count;
-            if (base.Owner != nc || item.count <= 0) return;
-            int stackSize = GetStackSize(item);
+            AddItem(new InventoryEquipment(itemID, amount, durability));
+        }
+
+        public void AddConsumable(string itemID, int amount, int doses)
+        {
+            AddItem(new InventoryConsumable(itemID, amount, doses));
+        }
+        void AddItem(InventoryItem item)
+        {
+            int fullAmount = item.Count;
+            if (item.Count <= 0) return;
+            int stackSize = item.ItemObject.MaxStack;
             foreach (var i in _items)
             {
-                if (item.count <= 0) break;
-                if (i.Value.id == item.id && i.Value.count < stackSize)
+                if (item.Count <= 0) break;
+                if (i.Value.ItemObject.ID == item.ItemObject.ID && i.Value.Count < stackSize)
                 {
-                    int amountToRemove = stackSize - i.Value.count;
-                    if (amountToRemove > item.count) amountToRemove = item.count;
-                    i.Value.count += amountToRemove;
-                    item.count -= amountToRemove;
+                    int amountToRemove = stackSize - i.Value.Count;
+                    if (amountToRemove > item.Count) amountToRemove = item.Count;
+                    i.Value.Count += amountToRemove;
+                    item.Count -= amountToRemove;
                 }
             }
-            if (item.count <= 0) return;
+            if (item.Count <= 0) return;
             foreach (var i in _items)
             {
-                if (i.Value.id == "Empty")
+                if (i.Value.ItemObject.ID == "Empty")
                 {
-                    if (item.count <= stackSize)
+                    if (item.Count <= stackSize)
                     {
                         _items[i.Key] = item; break;
                     }
                     else
                     {
-                        _items[i.Key] = new Item(item.id, stackSize);
-                        item.count -= stackSize;
+                        _items[i.Key] = new InventoryItem(item.ItemObject.ID, stackSize);
+                        item.Count -= stackSize;
                         continue;
                     }
                 }
 
             }
-            ItemAdded?.Invoke(this, new InventoryEventArgs(UserID, item.id, item.count, InventoryEvents.Added));
+            if (_items.Count == 0) _items.Add(item.ItemObject.ID, item);
+            InventoryEvent?.Invoke(this, new InventoryEventArgs(UserID, item.ItemObject.ID, item.Count, InventoryEvents.Added));
         }
-        [ServerRpc]
-        public void RemoveItem(Item item, NetworkConnection nc = null)
+        void RemoveItem(InventoryItem item)
         {
-            if (base.Owner != nc || item.count <= 0) return;
+            if (item.Count <= 0) return;
             foreach (var i in _items)
             {
-                if (i.Value.id != item.id) continue;
-                if (item.count < i.Value.count)
+                if (i.Value.ItemObject.ID != item.ItemObject.ID) continue;
+                if (item.Count < i.Value.Count)
                 {
-                    i.Value.count -= item.count;
+                    i.Value.Count -= item.Count;
                     break;
                 }
-                if (item.count == i.Value.count)
+                if (item.Count == i.Value.Count)
                 {
-                    _items[i.Key] = new Item("Empty");
+                    _items[i.Key] = new InventoryItem("Empty", 1);
                     break;
                 }
-                if (item.count > GetStackSize(item))
+                if (item.Count > item.ItemObject.MaxStack)
                 {
-                    _items[i.Key] = new Item("Empty");
-                    item.count -= GetStackSize(item);
+                    _items[i.Key] = new InventoryItem("Empty", 1);
+                    item.Count -= item.ItemObject.MaxStack;
                 }
 
             }
@@ -93,6 +103,10 @@ namespace Base.Inventory
             UserID = Core.Instance.LocalPlayer.UserID.Value;
             UserInput.InventoryKeyPressed += UserInput_InventoryKeyPressed;
             UIObject = GameObject.Find("InventoryPanel");
+            for (int i = 0; i < size; i++)
+            {
+                Items.Add("Empty" + i.ToString(), new InventoryItem("Empty", 1));
+            }
         }
         public override void OnStartClient()
         {
@@ -103,15 +117,14 @@ namespace Base.Inventory
             UIObject.SetActive(!UIObject.activeInHierarchy);
         }
 
-        public int AvailableItemAmount(Item item, NetworkConnection nc = null)
+        public int AvailableItemAmount(string itemID)
         {
-            if (base.Owner != nc) return -1;
             int amount = 0;
             foreach (var i in _items)
             {
-                if (i.Value.id == item.id)
+                if (i.Value.ItemObject.ID == itemID)
                 {
-                    amount += i.Value.count;
+                    amount += i.Value.Count;
                 }
             }
             return amount;
@@ -123,23 +136,22 @@ namespace Base.Inventory
             int amount = 0;
             foreach (var i in _items)
             {
-                if (i.Value.id == "Empty") amount++;
+                if (i.Value.ItemObject.ID == "Empty") amount++;
             }
             return amount;
         }
 
-        public int AvailableItemSpace(Item item, NetworkConnection nc = null)
+        public int AvailableItemSpace(string itemID)
         {
-            if (base.Owner != nc) return -1;
             int space = 0;
             foreach (var i in _items)
             {
-                if (i.Value.id == item.id)
+                if (i.Value.ItemObject.ID == itemID)
                 {
-                    space += i.Value.count;
+                    space += Core.Items[itemID].MaxStack - i.Value.Count;
                 }
             }
-            return space += EmptySlotAmount() * GetStackSize(item);
+            return space += EmptySlotAmount() * Core.Items[itemID].MaxStack;
         }
         private void OnDestroy()
         {

@@ -1,13 +1,14 @@
+using Base.Inventory;
 using UnityEngine;
 
 namespace Base
 {
     public class UIInventorySlot : MonoBehaviour
     {
-        Item item;
+        InventoryItem item;
         [SerializeField]
         int slot;
-        public Item Item
+        public InventoryItem Item
         {
             get
             {
@@ -32,7 +33,7 @@ namespace Base
 
         public void SwapItemSlot(UIInventorySlot target)
         {
-            Item temp = new Item(Item);
+            InventoryItem temp = new InventoryItem(Item);
             item = target.Item;
             target.Item = temp;
         }

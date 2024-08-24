@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Base.Inventory
 {
+    [CreateAssetMenu(menuName = "Inventory Items/Item")]
     public class ItemObject : ScriptableObject
     {
         public string ID;
@@ -14,5 +15,6 @@ namespace Base.Inventory
         public string Description;
         public int ItemType;
         public float MaxDurability;
+        public int MaxStack;
     }
 }

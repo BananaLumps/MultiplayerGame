@@ -1,6 +1,8 @@
 using Base.Client.Player;
+using Base.Inventory;
 using Base.Skills;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 namespace Base
@@ -10,7 +12,7 @@ namespace Base
     {
         static Core _instance = null;
         //Items by ID
-        Dictionary<string, Item> _items = new Dictionary<string, Item>();
+        static Dictionary<string, ItemObject> _items = new Dictionary<string, ItemObject>();
         //Icons by Item ID
         Dictionary<string, Texture2D> _icons = new Dictionary<string, Texture2D>();
         //Skills by ID
@@ -26,7 +28,7 @@ namespace Base
                 return _instance;
             }
         }
-        public Dictionary<string, Item> Items => _items;
+        public static Dictionary<string, ItemObject> Items => _items;
         public Dictionary<string, Texture2D> Icons => _icons;
         public Dictionary<string, SkillBase> Skills => _skills;
 
@@ -43,6 +45,10 @@ namespace Base
             }
             // PlayerPrefab = GameObject.Find("Player");
             Server = GameObject.Find("NetworkScripts").GetComponent<Base.Server.Server>();
+            foreach (ItemObject i in AssetDatabase.LoadAllAssetsAtPath("Assets/Resources/Items/itemstone.asset"))
+            {
+                Items.Add(i.ID, i);
+            }
 
         }
         private void Start()

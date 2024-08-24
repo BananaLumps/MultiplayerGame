@@ -10,5 +10,10 @@ namespace Base.Inventory
     public class InventoryConsumable : InventoryItem
     {
         public int DosesRemaining;
+
+        public InventoryConsumable(string ID, int count, int doses) : base(ID, count)
+        {
+            DosesRemaining = doses;
+        }
     }
 }

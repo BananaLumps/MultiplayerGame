@@ -11,6 +11,7 @@ namespace Base.Client
 
         }
         public static event System.Action InventoryKeyPressed;
+        public static event System.Action DebugTestKeyPressed;
 
         // Update is called once per frame
         void Update()
@@ -23,6 +24,9 @@ namespace Base.Client
                     {
                         case KeyBindings.Inventory:
                             InventoryKeyPressed?.Invoke();
+                            break;
+                        case KeyBindings.Debug:
+                            DebugTestKeyPressed?.Invoke();
                             break;
                         default:
                             break;

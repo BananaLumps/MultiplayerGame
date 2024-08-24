@@ -9,21 +9,21 @@ namespace Base.Inventory
 {
     public class EquipmentHandler : MonoBehaviour
     {
-        public Item MainHand;
-        public Item OffHand;
-        public Item ToolSlot1;
-        public Item ToolSlot2;
-        public Item ConsumableSlot1;
-        public Item ConsumableSlot2;
-        public Item Helm;
-        public Item Chest;
-        public Item Gloves;
-        public Item Legs;
-        public Item Boots;
-        public Item Amulet;
-        public Item RingRight;
-        public Item RingLeft;
-        public Item Cape;
-        public Item Belt;
+        public InventoryEquipment MainHand;
+        public InventoryEquipment OffHand;
+        public InventoryEquipment ToolSlot1;
+        public InventoryEquipment ToolSlot2;
+        public InventoryEquipment ConsumableSlot1;
+        public InventoryEquipment ConsumableSlot2;
+        public InventoryEquipment Helm;
+        public InventoryEquipment Chest;
+        public InventoryEquipment Gloves;
+        public InventoryEquipment Legs;
+        public InventoryEquipment Boots;
+        public InventoryEquipment Amulet;
+        public InventoryEquipment RingRight;
+        public InventoryEquipment RingLeft;
+        public InventoryEquipment Cape;
+        public InventoryEquipment Belt;
     }
 }
