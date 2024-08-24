@@ -12,7 +12,7 @@ namespace Base.Inventory
     {
         [SerializeField]
         GameObject UIObject;
-        string userID;
+        public string UserID;
         int size = 16;
         readonly SyncDictionary<int, Item> _items = new();
         Dictionary<int, int> itemLocation = new();
@@ -61,7 +61,7 @@ namespace Base.Inventory
                 }
 
             }
-            ItemAdded?.Invoke(this, new InventoryEventArgs(userID, item.id, item.count, InventoryEvents.Added));
+            ItemAdded?.Invoke(this, new InventoryEventArgs(UserID, item.id, item.count, InventoryEvents.Added));
         }
         [ServerRpc]
         public void RemoveItem(Item item, NetworkConnection nc = null)
@@ -90,7 +90,7 @@ namespace Base.Inventory
         }
         private void Start()
         {
-            userID = Core.Instance.LocalPlayer.UserID.Value;
+            UserID = Core.Instance.LocalPlayer.UserID.Value;
             UserInput.InventoryKeyPressed += UserInput_InventoryKeyPressed;
             UIObject = GameObject.Find("InventoryPanel");
         }
