@@ -121,28 +121,40 @@ namespace Base.Inventory
         public bool RemoveItem(InventoryItem item)
         {
             if (item.Count <= 0) return false;
-            if (AvailableItemAmount(item.ItemObject.ID) < item.Count) return false;
+            int maxStackSize = item.ItemObject.MaxStack;
+            int itemCount = AvailableItemSpace(item.ItemObject.ID);
+            int amountToRemove = item.Count;
+            if (itemCount < amountToRemove) return false;
             foreach (var i in Items)
             {
-                if (i.Value.ItemObject.ID == item.ItemObject.ID || i.Value.ItemObject.ID == "Empty")
+                if (amountToRemove <= 0) break;
+                if (i.Value.ItemObject.ID == item.ItemObject.ID && i.Value.Count < amountToRemove)
                 {
-                    if (item.Count < i.Value.Count)
-                    {
-                        i.Value.Count -= item.Count;
-                        break;
-                    }
-                    if (item.Count == i.Value.Count)
-                    {
-                        Items[i.Key] = new InventoryItem("Empty", 1);
-                        break;
-                    }
-                    if (item.Count > item.ItemObject.MaxStack)
-                    {
-                        Items[i.Key] = new InventoryItem("Empty", 1);
-                        item.Count -= item.ItemObject.MaxStack;
-                    }
+                    i.Value.Count -= amountToRemove;
+                    amountToRemove -= amountToRemove;
                 }
             }
+            if (amountToRemove > 0)
+            {
+                foreach (var i in Items)
+                {
+                    if (i.Value.ItemObject.ID == "Empty")
+                    {
+                        if (amountToRemove <= maxStackSize)
+                        {
+                            Items[i.Key] = item; break;
+                        }
+                        else
+                        {
+                            Items[i.Key] = new InventoryItem(item.ItemObject.ID, maxStackSize);
+                            amountToRemove -= maxStackSize;
+                            continue;
+                        }
+                    }
+
+                }
+            }
+            InventoryEvent?.Invoke(this, new InventoryEventArgs(UserID, item.ItemObject.ID, item.Count, InventoryEvents.Added));
             return true;
         }
         /// <summary>
