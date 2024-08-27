@@ -13,6 +13,7 @@ namespace Base.Inventory
         public InventoryEquipment(string ID, int count, float durability) : base(ID, count)
         {
             CurrentDurability = durability;
+            base.IsEquipment = true;
         }
     }
 }

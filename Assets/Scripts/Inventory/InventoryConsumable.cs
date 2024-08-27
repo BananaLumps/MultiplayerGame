@@ -14,6 +14,7 @@ namespace Base.Inventory
         public InventoryConsumable(string ID, int count, int doses) : base(ID, count)
         {
             DosesRemaining = doses;
+            base.IsConsumable = true;
         }
     }
 }
