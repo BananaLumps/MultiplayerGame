@@ -1,4 +1,5 @@
 ﻿using Base.Client;
+using Base.ModularUI;
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
@@ -222,6 +223,15 @@ namespace Base.Inventory
         {
             Items.Clear();
         }
+        [UIDataSource("Item", "Inventory")]
+        public InventoryItem Slot0
+        {
+            get
+            {
+                return Items[0];
+            }
+        }
+
     }
     /// <summary>
     /// Returns the player, the item and the amount processed. EventType specifies if it was added or removed.

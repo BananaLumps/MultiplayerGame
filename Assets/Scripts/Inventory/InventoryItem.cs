@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Base.ModularUI;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Base.Inventory
 
     public class InventoryItem
     {
+        [UIDataSource("ItemBase", "Item")]
         public ItemObject ItemObject;
         public int Count;
         public bool IsEquipment = false;
