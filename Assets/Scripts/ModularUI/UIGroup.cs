@@ -12,8 +12,8 @@ namespace Base.ModularUI
     {
         Bounds bounds;
         bool draggable = false;
-        List<UIObject> uiObjects;
-        public List<UIObject> UIObjects
+        List<UIObjectController> uiObjects;
+        public List<UIObjectController> UIObjects
         {
             get
             {
@@ -21,11 +21,11 @@ namespace Base.ModularUI
             }
         }
 
-        public void AddUIObject(UIObject obj)
+        public void AddUIObject(UIObjectController obj)
         {
             uiObjects.Add(obj);
         }
-        public void RemoveUIObject(UIObject obj)
+        public void RemoveUIObject(UIObjectController obj)
         {
             uiObjects.Remove(obj);
         }

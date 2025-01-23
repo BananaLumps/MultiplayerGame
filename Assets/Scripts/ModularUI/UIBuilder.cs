@@ -42,13 +42,14 @@ namespace Base.ModularUI
                 isMoving = value;
             }
         }
+        public Button TestButton;
 
         GameObject ghostObject;
         float alphaValue = .25f;
         GameObject objectToMove;
         private void Update()
         {
-            if (Input.GetMouseButtonDown(1)) IsPlacing = !IsPlacing;
+            if (Input.GetMouseButtonDown(1)) { CancelMovingObject(); }
             if (IsPlacing && currentlySelectedPrefab != null)
             {
                 if (ghostObject == null) GetGhostInstance(currentlySelectedPrefab);
@@ -64,6 +65,10 @@ namespace Base.ModularUI
                 if (ghostObject == null) ghostObject = GetGhostInstance(objectToMove);
                 ghostObject.transform.position = manager.Grid.Grid[manager.Grid.SnapToGrid(Input.mousePosition)].transform.position;
             }
+        }
+        private void Awake()
+        {
+            TestButton.onClick.AddListener(CreatePanel);
         }
         public GameObject GetGhostInstance(GameObject go)
         {
@@ -87,6 +92,12 @@ namespace Base.ModularUI
             IsMoving = false;
             objectToMove = null;
         }
+        public void CancelMovingObject()
+        {
+            objectToMove.GetComponent<UIObjectController>().CancelMove();
+            IsMoving = false;
+            objectToMove = null;
+        }
         public void SetAlphaForGameObject(GameObject targetObject, float alphaValue)
         {
             Image[] images = targetObject.GetComponentsInChildren<Image>();
@@ -97,6 +108,27 @@ namespace Base.ModularUI
                 color.a = alphaValue;
                 image.color = color;
             }
+        }
+
+        public void CreatePanel()
+        {
+            // Load the panel prefab from Resources/Prefabs
+            GameObject panelPrefab = Resources.Load<GameObject>("Prefabs/PanelPrefab");
+            if (panelPrefab == null)
+            {
+                Debug.LogError("PanelPrefab not found in Resources/Prefabs");
+                return;
+            }
+
+            // Instantiate the panel prefab
+            GameObject panelInstance = Instantiate(panelPrefab);
+
+            // Set the parent of the instantiated panel to the canvas
+            panelInstance.transform.SetParent(GameObject.Find("Canvas").transform, false);
+
+            // Position the panel in the center of the canvas
+            RectTransform rectTransform = panelInstance.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition = Vector2.zero;
         }
     }
 }

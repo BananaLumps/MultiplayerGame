@@ -1,5 +1,6 @@
 ﻿using Base.Client;
 using Base.ModularUI;
+using Base.ModularUI.DataBinding;
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
@@ -11,6 +12,8 @@ using UnityEngine;
 
 namespace Base.Inventory
 {
+    [UIDataSource("Inventory", "Player")]
+    [DataBind("Player/Inventory", DataBindType.Source, "Inventory")]
     public class Inventory : NetworkBehaviour
     {
         /// <summary>

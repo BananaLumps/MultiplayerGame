@@ -10,20 +10,32 @@ using UnityEngine.UI;
 
 namespace Base.ModularUI
 {
-    public class UIObject : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
+    /// <summary>
+    /// Controls the behavior of a UI object in the scene.
+    /// </summary>
+    public class UIObjectController : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
     {
+
+        /// <summary>
+        /// Determines if the object can be dragged.
+        /// </summary>
         [SerializeField]
-        public bool draggable = false;
+        public bool IsDraggable = false;
+        /// <summary>
+        /// True if the object is being dragged.
+        /// </summary>
         bool isMoving = false;
-        public string displayName;
+        bool releaseDrag = false;
+        public string displayText;
         public DataType dataType = DataType.None;
         private void Awake()
         {
-            GetComponent<Image>().raycastTarget = draggable;
+            GetComponent<Image>().raycastTarget = IsDraggable;
         }
         public void OnDrag(PointerEventData eventData)
         {
-            if (draggable && !isMoving)
+            if (releaseDrag) eventData.pointerDrag = null;
+            if (IsDraggable && !isMoving)
             {
                 UIManager.Builder.BeginMovingObject(gameObject);
                 isMoving = true;
@@ -41,9 +53,15 @@ namespace Base.ModularUI
                 isMoving = false;
             }
         }
-        public UIObject[] GetChildUIObjects()
+        public void CancelMove()
         {
-            return GetComponentsInChildren<UIObject>();
+            isMoving = false;
+            releaseDrag = true;
+
+        }
+        public UIObjectController[] GetChildUIObjects()
+        {
+            return GetComponentsInChildren<UIObjectController>();
         }
         public GameObject[] GetChildUIObjectGOs()
         {

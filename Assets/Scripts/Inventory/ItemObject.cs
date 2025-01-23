@@ -1,4 +1,5 @@
 ﻿using Base.ModularUI;
+using Base.ModularUI.DataBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace Base.Inventory
     [CreateAssetMenu(menuName = "Inventory Items/Item")]
     public class ItemObject : ScriptableObject
     {
-        [UIDataBind("ID", "ItemBase")]
+        [DataBind("Player/Inventory/Item/ID", DataBindType.Text, "ItemID")]
         public string ID;
-        [UIDataBind("Name", "ItemBase")]
+        [DataBind("Player/Inventory/Item/Name", DataBindType.Text, "ItemName")]
         public string Name;
         public string Description;
         public int ItemType;

@@ -6,17 +6,6 @@ using System.Threading.Tasks;
 
 namespace Base.ModularUI
 {
-    //public abstract class UIDataSource
-    //{
-    //    public abstract string Name
-    //    {
-    //        get;
-    //    }
-    //    public abstract Dictionary<string, object> DataBinds
-    //    {
-    //        get;
-    //    }
-    //}
     [AttributeUsage(AttributeTargets.Property |
                        AttributeTargets.Field)
 ]
@@ -32,7 +21,7 @@ namespace Base.ModularUI
         }
     }
     [AttributeUsage(AttributeTargets.Property |
-                   AttributeTargets.Field)
+                   AttributeTargets.Field | AttributeTargets.Class)
 ]
     public class UIDataSource : Attribute
     {

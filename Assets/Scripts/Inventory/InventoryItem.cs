@@ -1,5 +1,4 @@
-﻿using Base.ModularUI;
-using JetBrains.Annotations;
+﻿using Base.ModularUI.DataBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +8,9 @@ using UnityEngine;
 
 namespace Base.Inventory
 {
-
+    [DataBind("Player/Inventory/Item", DataBindType.Source, "InventoryItem")]
     public class InventoryItem
     {
-        [UIDataSource("ItemBase", "Item")]
         public ItemObject ItemObject;
         public int Count;
         public bool IsEquipment = false;

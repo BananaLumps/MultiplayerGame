@@ -12,11 +12,11 @@ namespace Base.ModularUI
         /// <summary>
         /// Pixels between snap points
         /// </summary>
-        public int gridSize = 8;
+        public int gridSize = 16;
         /// <summary>
         /// Grid offset from screen edge. Defaults to half of the grid size which is recommended.
         /// </summary>
-        public int gridOffset = 4;
+        public int gridOffset = 8;
 
         public Dictionary<Vector2, UISnapPoint> Grid
         {
@@ -28,7 +28,7 @@ namespace Base.ModularUI
             gridOffset = gridSize / 2;
             CreateGrid();
         }
-        public void CreateGrid()
+        private void CreateGrid()
         {
             for (int y = 0; y < Screen.height / gridSize; y++)
             {

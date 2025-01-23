@@ -7,7 +7,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Base.ModularUI
-{
+{/// <summary>
+/// The UIManager is responsible for managing the UI elements in the scene as well as building new elements.
+/// </summary>
     public class UIManager : MonoBehaviour
     {
         private static UIManager _instance;
@@ -73,6 +75,11 @@ namespace Base.ModularUI
             Grid = gridGO.AddComponent<UIGrid>();
         }
 
+        /// <summary>
+        /// Create a new UI element at the specified position.
+        /// </summary>
+        /// <param name="prefabToSpawn"></param>
+        /// <param name="point"></param>
         public void SpawnAtPoint(GameObject prefabToSpawn, UISnapPoint point)
         {
             GameObject temp = Instantiate(prefabToSpawn);
