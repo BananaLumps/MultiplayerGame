@@ -12,7 +12,7 @@ namespace Base.Client.Player
 
         public readonly SyncVar<string> PlayerName = new();
         public readonly SyncVar<string> UserID = new();
-        public Base.Inventory.Inventory Inventory;
+        public Base.Inventory.InventoryController Inventory;
         public readonly SyncList<SkillBase> SkillList = new();
         public EquipmentHandler Equipment;
 
@@ -32,7 +32,7 @@ namespace Base.Client.Player
         {
             UserID.Value = "Banana";
             Core.Instance.LocalPlayer = this;
-            Inventory = gameObject.AddComponent<Base.Inventory.Inventory>();
+            Inventory = gameObject.AddComponent<Base.Inventory.InventoryController>();
             Equipment = gameObject.AddComponent<EquipmentHandler>();
 
         }

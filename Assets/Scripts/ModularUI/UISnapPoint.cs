@@ -5,7 +5,7 @@ namespace Base.ModularUI
 {
     public class UISnapPoint : MonoBehaviour
     {
-#if DEBUG
+#if false
         private void OnDrawGizmos()
         {
             Gizmos.DrawCube(gameObject.transform.position, new Vector3(8, 8, 8));

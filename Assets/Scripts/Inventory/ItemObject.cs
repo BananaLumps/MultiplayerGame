@@ -12,9 +12,9 @@ namespace Base.Inventory
     [CreateAssetMenu(menuName = "Inventory Items/Item")]
     public class ItemObject : ScriptableObject
     {
-        [DataBind("Player/Inventory/Item/ID", DataBindType.Text, "ItemID")]
+        [DataBind("Inventory/Item/ID", DataBindType.Text, "ItemID")]
         public string ID;
-        [DataBind("Player/Inventory/Item/Name", DataBindType.Text, "ItemName")]
+        [DataBind("Inventory/Item/Name", DataBindType.Text, "ItemName")]
         public string Name;
         public string Description;
         public int ItemType;

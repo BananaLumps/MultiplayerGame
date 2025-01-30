@@ -43,8 +43,9 @@ namespace Base
             {
                 _instance = this;
             }
+            //Commented out for UI Testing, Need to add back in after testing
             // PlayerPrefab = GameObject.Find("Player");
-            Server = GameObject.Find("NetworkScripts").GetComponent<Base.Server.Server>();
+            //  Server = GameObject.Find("NetworkScripts").GetComponent<Base.Server.Server>();
             foreach (ItemObject i in AssetDatabase.LoadAllAssetsAtPath("Assets/Resources/Items/itemstone.asset"))
             {
                 Items.Add(i.ID, i);

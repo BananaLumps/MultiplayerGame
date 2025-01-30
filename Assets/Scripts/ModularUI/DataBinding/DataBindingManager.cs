@@ -11,9 +11,15 @@ namespace Base.ModularUI.DataBinding
 
     public static class DataBindManager
     {
+        static bool initialized = false;
         public static void Init()
         {
+            if (initialized)
+            {
+                return;
+            }
             DataBinds = new Dictionary<DataBindType, Dictionary<string, DataBindInfo>>();
+            DataSources = new Dictionary<string, object>();
             foreach (DataBindInfo dataBind in GetDataBinds())
             {
                 if (!DataBinds.ContainsKey(dataBind.Type))
@@ -22,6 +28,7 @@ namespace Base.ModularUI.DataBinding
                 }
                 DataBinds[dataBind.Type][dataBind.Name] = dataBind;
             }
+            initialized = true;
         }
         public static DataBindInfo FindBind(DataBindType type, string name)
         {
@@ -43,6 +50,10 @@ namespace Base.ModularUI.DataBinding
             return false;
         }
         public static Dictionary<DataBindType, Dictionary<string, DataBindInfo>> DataBinds
+        {
+            get; private set;
+        }
+        public static Dictionary<string, object> DataSources
         {
             get; private set;
         }
@@ -119,6 +130,11 @@ namespace Base.ModularUI.DataBinding
                 return typedValue;
             }
             throw new InvalidCastException($"Cannot cast value to type {typeof(T)}");
+        }
+
+        public static void AddDataSource(string subMenuPath, object dataSource)
+        {
+            DataSources.Add(subMenuPath, dataSource);
         }
     }
 }

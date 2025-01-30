@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Base.ModularUI
@@ -43,7 +45,6 @@ namespace Base.ModularUI
             }
         }
         public Button TestButton;
-
         GameObject ghostObject;
         float alphaValue = .25f;
         GameObject objectToMove;
@@ -68,7 +69,11 @@ namespace Base.ModularUI
         }
         private void Awake()
         {
-            TestButton.onClick.AddListener(CreatePanel);
+            TestButton.onClick.AddListener(ButtonClick);
+        }
+        private void ButtonClick()
+        {
+            CreateContextMenuAtLocation(TestButton.transform.position);
         }
         public GameObject GetGhostInstance(GameObject go)
         {
@@ -109,7 +114,13 @@ namespace Base.ModularUI
                 image.color = color;
             }
         }
-
+        public void CreateContextMenuAtLocation(Vector3 location)
+        {
+            GameObject temp = Instantiate(Resources.Load<GameObject>("UIPrefabs/Builder/ContextDropdownPanelPrefab"));
+            temp.transform.parent = GameObject.Find("Canvas").transform;
+            temp.transform.position = new Vector3(location.x, location.y + ((temp.GetComponent<RectTransform>().rect.height / 2) + (TestButton.GetComponent<RectTransform>().rect.height / 2)));
+            temp.GetComponent<RectTransform>().sizeDelta = new Vector2(TestButton.GetComponent<RectTransform>().sizeDelta.x, temp.GetComponent<RectTransform>().sizeDelta.y);
+        }
         public void CreatePanel()
         {
             // Load the panel prefab from Resources/Prefabs
@@ -129,6 +140,32 @@ namespace Base.ModularUI
             // Position the panel in the center of the canvas
             RectTransform rectTransform = panelInstance.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = Vector2.zero;
+        }
+        public enum BoundsPosition
+        {
+            Center,
+            BottomLeft,
+            BottomRight,
+            TopLeft,
+            TopRight
+        }
+        public Vector3 GetBoundsPosition(Bounds bounds, BoundsPosition position)
+        {
+            switch (position)
+            {
+                case BoundsPosition.Center:
+                    return bounds.center;
+                case BoundsPosition.BottomLeft:
+                    return new Vector3(bounds.min.x, bounds.min.y, bounds.center.z);
+                case BoundsPosition.BottomRight:
+                    return new Vector3(bounds.max.x, bounds.min.y, bounds.center.z);
+                case BoundsPosition.TopLeft:
+                    return new Vector3(bounds.min.x, bounds.max.y, bounds.center.z);
+                case BoundsPosition.TopRight:
+                    return new Vector3(bounds.max.x, bounds.max.y, bounds.center.z);
+                default:
+                    return Vector3.zero;
+            }
         }
     }
 }

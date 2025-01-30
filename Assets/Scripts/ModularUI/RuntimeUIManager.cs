@@ -1,3 +1,4 @@
+using Base.ModularUI.DataBinding;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,7 @@ namespace Base.ModularUI
             {
                 canvas = FindObjectOfType<Canvas>();
             }
+            DataBindManager.Init();
         }
 
         void Update()
@@ -36,7 +38,6 @@ namespace Base.ModularUI
                 CreateImage();
             }
         }
-
         public void CreateButton()
         {
             GameObject button = Instantiate(buttonPrefab, canvas.transform);

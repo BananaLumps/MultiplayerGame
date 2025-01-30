@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace Base.Inventory
 {
-    [DataBind("Player/Inventory/Item", DataBindType.Source, "InventoryItem")]
     public class InventoryItem
     {
         public ItemObject ItemObject;
+        [DataBind("Inventory/Item/Count", DataBindType.Number, "ItemCount")]
         public int Count;
         public bool IsEquipment = false;
         public bool IsConsumable = false;
