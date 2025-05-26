@@ -8,13 +8,15 @@ using UnityEngine.UI;
 
 namespace Base.UI
 {
-    public class ContextDropdownController : MonoBehaviour
+    public class ContextDropdownController : MonoBehaviour, IPointerClickHandler
     {
         GameObject ContextMenuObjectPrefab;
         GameObject ObjectContainer;
         Button BackButton;
         public GameObject RootStorageParent;
         private Stack<GameObject> navigationStack = new Stack<GameObject>();
+        private GraphicRaycaster graphicRaycaster;
+        private EventSystem eventSystem;
         void Start()
         {
             BackButton = GetComponentInChildren<Button>();
@@ -25,6 +27,8 @@ namespace Base.UI
             RootStorageParent.transform.SetParent(ObjectContainer.transform.parent);
             BackButton.onClick.AddListener(OnBackButtonClicked);
             PopulateData(new List<string> { "Player/Inventory/Item", "Player/Inventory/Weapon", "Player/Stats/Health", "Player/Stats/Attack", "Player/Stats/Defense", "Target/Inventory/Item", "Target/Stats/Attack", "Target/Stats/HP" });
+            graphicRaycaster = GetComponentInParent<Canvas>().GetComponent<GraphicRaycaster>();
+            eventSystem = EventSystem.current;
         }
         public RectTransform targetRectTransform;
         public void OnPointerClick(PointerEventData eventData)
@@ -35,15 +39,35 @@ namespace Base.UI
                 return;
             }
 
-            Vector2 localMousePosition = targetRectTransform.InverseTransformPoint(eventData.position);
-            if (targetRectTransform.rect.Contains(localMousePosition))
+            // Perform a raycast to check if the click was on any UI element
+            List<RaycastResult> results = new List<RaycastResult>();
+            graphicRaycaster.Raycast(eventData, results);
+
+            if (results.Count > 0)
             {
-                Debug.Log("Clicked inside the target bounds.");
+                // Click was on a UI element
+                Vector2 localMousePosition = targetRectTransform.InverseTransformPoint(eventData.position);
+                if (targetRectTransform.rect.Contains(localMousePosition))
+                {
+                    Debug.Log("Clicked inside the target bounds.");
+                }
+                else
+                {
+                    Debug.Log("Clicked outside the target bounds.");
+                    HandleClickOutside();
+                }
             }
             else
             {
-                Debug.Log("Clicked outside the target bounds.");
+                // Click was outside any UI element
+                Debug.Log("Clicked outside any UI element.");
+                HandleClickOutside();
             }
+        }
+        private void HandleClickOutside()
+        {
+            // Handle the click outside the target bounds
+            Debug.Log("Handling click outside the target bounds.");
         }
         public void PopulateData(List<string> data)
         {
@@ -166,6 +190,11 @@ namespace Base.UI
         private void ShowObject(GameObject gameObject)
         {
             gameObject.transform.localScale = new Vector3(1, 1, 1);
+        }
+
+        public void Close()
+        {
+            Destroy(this.gameObject);
         }
     }
 }

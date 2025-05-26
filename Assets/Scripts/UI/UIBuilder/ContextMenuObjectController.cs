@@ -36,7 +36,6 @@ namespace Base.Assets.Scripts.UI.UIBuilder
             if (children == null) children = new List<GameObject>();
             children.Add(child);
         }
-        // Use this for initialization
         void Start()
         {
         }
