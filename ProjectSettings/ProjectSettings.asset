@@ -739,7 +739,7 @@ PlayerSettings:
   webGLPowerPreference: 2
   scriptingDefineSymbols:
     Server: FISHNET;FISHNET_V4
-    Standalone: FISHNET;FISHNET_V4;FISHNET_STABLE_MODE;FISHNET_DISABLE_V3TOV4_HELPERS
+    Standalone: FISHNET;FISHNET_V4;FISHNET_STABLE_MODE;FISHNET_DISABLE_V3TOV4_HELPERS;UNITY_SERVER;UNITY_EDITOR
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

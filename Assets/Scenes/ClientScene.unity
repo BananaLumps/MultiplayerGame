@@ -17492,7 +17492,7 @@ MonoBehaviour:
   _teleportThreshold: 1
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
-  <SceneId>k__BackingField: 3755960275
+  <SceneId>k__BackingField: 4290711279
   <AssetPathHash>k__BackingField: 0
 --- !u!1001 &1197884721
 PrefabInstance:
@@ -21543,7 +21543,7 @@ MonoBehaviour:
   _teleportThreshold: 1
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
-  <SceneId>k__BackingField: 2011113441
+  <SceneId>k__BackingField: 3555659755
   <AssetPathHash>k__BackingField: 0
 --- !u!114 &1458539538
 MonoBehaviour:
@@ -31127,7 +31127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 88581807385974329, guid: a490f8ddc8c4d48418416a19fdb9e3b4, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 88581807385974329, guid: a490f8ddc8c4d48418416a19fdb9e3b4, type: 3}
       propertyPath: m_AnchorMin.x
@@ -31135,15 +31135,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 88581807385974329, guid: a490f8ddc8c4d48418416a19fdb9e3b4, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 88581807385974329, guid: a490f8ddc8c4d48418416a19fdb9e3b4, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 72
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 88581807385974329, guid: a490f8ddc8c4d48418416a19fdb9e3b4, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 72
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 88581807385974329, guid: a490f8ddc8c4d48418416a19fdb9e3b4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -31175,11 +31175,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 88581807385974329, guid: a490f8ddc8c4d48418416a19fdb9e3b4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 36
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 88581807385974329, guid: a490f8ddc8c4d48418416a19fdb9e3b4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -36
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 88581807385974329, guid: a490f8ddc8c4d48418416a19fdb9e3b4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
